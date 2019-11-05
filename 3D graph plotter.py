@@ -1,5 +1,4 @@
 import serial
-import time
 import matplotlib as plot
 import numpy
 
@@ -7,7 +6,6 @@ import numpy
 port = 'com5'
 
 ArduinoSerial = serial.Serial(port, 9600)#serial port opject
-time.sleep(0.2)
 
 while 1:
     i=0
