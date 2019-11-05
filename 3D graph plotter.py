@@ -11,7 +11,17 @@ time.sleep(0.2)
 
 while 1:
     i=0
-    x,y,z = ([] for i in range(3))#make list for 
-    x.append(ArduinoSerial.readline())
-    y.append(ArduinoSerial.readline())
-    z.append(ArduinoSerial.readline())
+    datapoint = []
+    theta = ArduinoSerial.readline()
+    phi = ArduinoSerial.readline()
+    r = ArduinoSerial.readline()
+
+    x = r*cos(phi)*cos(theta)
+    y = r*cos(phi)*sin(theta)
+    z = r*sin(phi)
+
+    #add filtering here
+
+    datapoint.append([x,y,z])
+    for i in datapoint:
+        print(i)
