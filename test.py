@@ -1,16 +1,28 @@
 from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plot
+import matplotlib.pyplot as plt
 import numpy as np
 
 
-fig = plot.figure()
-ax = fig.add_subplot(111, projection='3d')
-plot.axis('off')
 
-x = [1,2,6,2,7,2,2,5,6]
-y = [5,8,5,2,7,1,5,4,4]
-z = [7,15,7,2,8,4,2,1,7]
 
-ax.scatter(x,y,z)
+def z_function(x, y):
+    return np.sin(np.sqrt(x ** 2 + y ** 2))
 
-plot.show(block=True)
+x = np.linspace(-6, 6, 30)
+y = np.linspace(-6, 6, 30)
+
+X, Y = np.meshgrid(x, y)
+Z = z_function(X, Y)
+
+
+
+fig = plt.figure()
+ax = plt.axes(projection="3d")
+ax.plot_wireframe(X, Y, Z, color='green')
+ax.plot_surface(X, Y, Z, rstride=1, cstride=1,cmap='winter', edgecolor='none')
+ax.set_title('surface');
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('z')
+
+plt.show()
