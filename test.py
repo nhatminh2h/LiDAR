@@ -18,6 +18,7 @@ Z = z_function(X, Y)
 
 fig = plt.figure()
 ax = plt.axes(projection="3d")
+
 ax.plot_wireframe(X, Y, Z, color='green')
 ax.plot_surface(X, Y, Z, rstride=1, cstride=1,cmap='winter', edgecolor='none')
 ax.set_title('surface');
