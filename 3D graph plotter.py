@@ -15,9 +15,6 @@ ArduinoSerial = serial.Serial(port, 9600)#serial port object
 x = [0]
 y = [0]
 z = [0]
-def degtorad(deg):
-    rad = deg*math.pi/180
-    return rad
 
 def update_graph(num):
 
@@ -35,7 +32,7 @@ def update_graph(num):
 #plot setup
 fig = plt.figure()
 ax = fig.add_subplot(111, projection="3d")
-graph = ax.scatter(x,y,z, c='b',marker='.')
+graph = ax.scatter(x,y,z, c='g',marker='.')
 #plt.axis('off')
 
 ani = animation.FuncAnimation(fig, update_graph, frames=200, interval=50, blit=False)
