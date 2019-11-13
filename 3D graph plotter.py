@@ -35,7 +35,7 @@ def update_graph(num):
 #plot setup
 fig = plt.figure()
 ax = fig.add_subplot(111, projection="3d")
-graph = ax.scatter(x,y,z, c='b',marker='o')
+graph = ax.scatter(x,y,z, c='b',marker='.')
 #plt.axis('off')
 
 ani = animation.FuncAnimation(fig, update_graph, frames=200, interval=50, blit=False)
