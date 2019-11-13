@@ -3,7 +3,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
-from math import cos, sin,degrees
+from math import cos, sin,radians, pi
 
 #Arduino port here
 port = 'com3'
@@ -15,6 +15,9 @@ ArduinoSerial = serial.Serial(port, 9600)#serial port object
 x = [0]
 y = [0]
 z = [0]
+def degtorad(deg):
+    rad = deg*math.pi/180
+    return rad
 
 def update_graph(num):
 
@@ -22,9 +25,9 @@ def update_graph(num):
     temp_p = 135 - int(ArduinoSerial.readline().decode("utf-8"))#adjusting for v_angle offset
     temp_r = int(ArduinoSerial.readline().decode("utf-8"))
 
-    x.append((temp_r*cos(degrees(temp_p))*cos(degrees(temp_t))))
-    y.append((temp_r*cos(degrees(temp_p))*sin(degrees(temp_t))))
-    z.append((temp_r*sin(degrees(temp_p))))
+    x.append((temp_r*cos(radians(temp_p))*cos(radians(temp_t))))
+    y.append((temp_r*cos(radians(temp_p))*sin(radians(temp_t))))
+    z.append((temp_r*sin(radians(temp_p))))
     #add filtering here
     graph._offsets3d = (x,y,z)
     return graph
@@ -32,8 +35,8 @@ def update_graph(num):
 #plot setup
 fig = plt.figure()
 ax = fig.add_subplot(111, projection="3d")
-graph = ax.scatter(x,y,z, c='r',marker='o')
-plt.axis('off')
+graph = ax.scatter(x,y,z, c='b',marker='o')
+#plt.axis('off')
 
 ani = animation.FuncAnimation(fig, update_graph, frames=200, interval=50, blit=False)
 plt.show()
