@@ -22,6 +22,7 @@ int cal_cnt = 0;
 void setup() {
   servov.attach(12);  // attaches the servo on pin 9 to the servo object
   servoh.attach(4);
+  servov.write(v_angle);
   
   Serial.begin(9600); 
 

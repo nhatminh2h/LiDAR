@@ -1,6 +1,7 @@
 import serial
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 import numpy as np
 from math import cos, sin,degrees
 
@@ -8,38 +9,31 @@ from math import cos, sin,degrees
 port = 'com3'
 ArduinoSerial = serial.Serial(port, 9600)#serial port object
 
+#data arrays
+#theta, phi, r = ([0] for i in range(3))#RAW data in polar
+#x, y , z = ([0] for i in range(3))#3D coordinate
+x = [0]
+y = [0]
+z = [0]
+
+def update_graph(num):
+
+    temp_t = int((ArduinoSerial.readline().decode("utf-8")))
+    temp_p = 135 - int(ArduinoSerial.readline().decode("utf-8"))#adjusting for v_angle offset
+    temp_r = int(ArduinoSerial.readline().decode("utf-8"))
+
+    x.append((temp_r*cos(degrees(temp_p))*cos(degrees(temp_t))))
+    y.append((temp_r*cos(degrees(temp_p))*sin(degrees(temp_t))))
+    z.append((temp_r*sin(degrees(temp_p))))
+    #add filtering here
+    graph._offsets3d = (x,y,z)
+    return graph
+
 #plot setup
 fig = plt.figure()
-ax = plt.axes(projection="3d")
-#plt.axis('off')
+ax = fig.add_subplot(111, projection="3d")
+graph = ax.scatter(x,y,z, c='r',marker='o')
+plt.axis('off')
 
-#data arrays
-theta, phi, r = ([0] for i in range(3))#RAW data in polar
-x, y , z = ([0] for i in range(3))#3D coordinate
-
-def animate(i):
-    graph_data = open('test.txt', 'r').read()
-    lines = graph_data.split('\n')
-
-while True:
-    i=0
-    theta[i] = (ArduinoSerial.readline().decode())#h_angle
-    phi[i] = (ArduinoSerial.readline().decode())#v_angle
-    r[i] = (ArduinoSerial.readline().decode())#distance
-
-    temp_t = int(theta[i])
-    temp_p = 135 - int(phi[i])#adjusting for v_angle offset
-    temp_r = int(r[i])
-
-    x[i] = int((temp_r*cos(degrees(temp_p))*cos(degrees(temp_t))))
-    y[i] = int((temp_r*cos(degrees(temp_p))*sin(degrees(temp_t))))
-    z[i] = int((temp_r*sin(degrees(temp_p))))
-
-    #add filtering here
-    print(x[i])
-    print(y[i])
-    print(z[i])
-    ax.clear()
-    ax.scatter(x,y,z)
-    plt.show()
-    i+= 1
+ani = animation.FuncAnimation(fig, update_graph, frames=200, interval=50, blit=False)
+plt.show()
