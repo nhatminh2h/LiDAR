@@ -9,7 +9,7 @@ Servo servov;
 // initialize the stepper library on pins 8 through 11:
 //Stepper Stepper1(stepsPerRevolution, 8, 9, 10, 11);
 
-int v_angle = 135;//135 = flat,resting position 90, 
+int v_angle = 90;//135 = flat,resting position 90, 
 //Verticle 40
 int h_angle = 20;//DO NOT SET AT 0, resting position 90
 //FRONT (sticker) 90
@@ -20,11 +20,11 @@ LIDARLite lidarLite;
 int cal_cnt = 0;
 
 void setup() {
-  servov.attach(12);  // attaches the servo on pin 9 to the servo object
-  servoh.attach(4);
+  servov.attach(12);  // tilt servo to pin 12
+  servoh.attach(4);   // pan servo to pin 4
   servov.write(v_angle);
   
-  Serial.begin(9600); 
+  Serial.begin(115200); 
 
   lidarLite.begin(0, true); // Set configuration to default and I2C to 400 kHz
   lidarLite.configure(0); // Change this number to try out alternate configurations
@@ -32,7 +32,7 @@ void setup() {
 
 void span() {
   
-  for(int v_angle = 135; v_angle >= 45; )//angle is 90 at
+  for(int v_angle = 90; v_angle <= 135; )//angle is 90 at
   {
     for(int h_angle = 20; h_angle <= 180; h_angle++)//sweeps right to left
     {
@@ -40,11 +40,11 @@ void span() {
         Serial.println(h_angle); //Serial.print("\t");
         Serial.println(v_angle); //Serial.print("\t");
         lidar();
-        delay(50);//delay between horizontal angle changes
+        delay(5);//delay between horizontal angle changes
     }
     
-    v_angle = v_angle - 2;//decrease verticle angle by 2
-    servov.write(v_angle); // change verticle motor
+    v_angle = v_angle + 1;//change verticle angle by 1
+    servov.write(v_angle); // update change
         
     for(int h_angle = 180; h_angle >= 20; h_angle--)//sweeps left to right
     {
@@ -52,11 +52,11 @@ void span() {
         Serial.println(h_angle); //Serial.print("\t");
         Serial.println(v_angle); //Serial.print("\t");
         lidar();
-        delay(50);//delay between horizontal angle changes
+        delay(5);//delay between horizontal angle changes
     }
        
-    v_angle = v_angle - 2;//decrease verticle angle by 2
-    servov.write(v_angle); // change verticle motor
+    v_angle = v_angle + 1;//change verticle angle by 1
+    servov.write(v_angle); // update change
   }
 }
 

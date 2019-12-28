@@ -7,10 +7,10 @@ from math import cos, sin,radians, pi
 
 #Arduino port here
 port = 'com3'
-ArduinoSerial = serial.Serial(port, 9600)#serial port object
+ArduinoSerial = serial.Serial(port, 115200)#serial port object
 
 #data arrays
-#theta, phi, r = ([0] for i in range(3))#RAW data in polar
+#theta, phi, r = ([0] for i in rannge(3))#RAW data in polar
 #x, y , z = ([0] for i in range(3))#3D coordinate
 x = [0]
 y = [0]
@@ -32,8 +32,8 @@ def update_graph(num):
 #plot setup
 fig = plt.figure()
 ax = fig.add_subplot(111, projection="3d")
-graph = ax.scatter(x,y,z, c='g',marker='.')
+graph = ax.scatter(x,y,z, c='b',marker='.')
 #plt.axis('off')
 
-ani = animation.FuncAnimation(fig, update_graph, frames=200, interval=50, blit=False)
+ani = animation.FuncAnimation(fig, update_graph, frames=200, interval=20, blit=False)
 plt.show()
