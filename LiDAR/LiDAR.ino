@@ -4,20 +4,23 @@
 
 Servo servoh;
 Servo servov;
+LIDARLite lidarLite; //lidar object
 
 //const int stepsPerRevolution = 90;
 // initialize the stepper library on pins 8 through 11:
 //Stepper Stepper1(stepsPerRevolution, 8, 9, 10, 11);
 
-int v_angle = 90;//135 = flat,resting position 90, 
+
+
+
+int v_angle = 60;//135 = flat,resting position 90, 
 //Verticle 40
 int h_angle = 20;//DO NOT SET AT 0, resting position 90
 //FRONT (sticker) 90
 //LEFT (of the lidar) 180
 //RIGHT 20
 
-LIDARLite lidarLite;
-int cal_cnt = 0;
+
 
 void setup() {
   servov.attach(12);  // tilt servo to pin 12
@@ -32,7 +35,7 @@ void setup() {
 
 void span() {
   
-  for(int v_angle = 90; v_angle <= 135; )//angle is 90 at
+  for(int v_angle = 60; v_angle <= 150; )//angle is 135 at flat
   {
     for(int h_angle = 20; h_angle <= 180; h_angle++)//sweeps right to left
     {
@@ -40,7 +43,7 @@ void span() {
         Serial.println(h_angle); //Serial.print("\t");
         Serial.println(v_angle); //Serial.print("\t");
         lidar();
-        delay(5);//delay between horizontal angle changes
+        //delay(1);//delay between horizontal angle changes
     }
     
     v_angle = v_angle + 1;//change verticle angle by 1
@@ -52,7 +55,7 @@ void span() {
         Serial.println(h_angle); //Serial.print("\t");
         Serial.println(v_angle); //Serial.print("\t");
         lidar();
-        delay(5);//delay between horizontal angle changes
+        //delay(1);//delay between horizontal angle changes
     }
        
     v_angle = v_angle + 1;//change verticle angle by 1
@@ -61,15 +64,22 @@ void span() {
 }
 
 void lidar() {
-  int dist;
-
+  int dist, cal_cnt = 0, sample = 5, i;
+  int distance[sample];
+  
   // At the beginning of every 100 readings,
   // take a measurement with receiver bias correction
-  if ( cal_cnt == 0 ) {
-    dist = lidarLite.distance();      // With bias correction
-  } else {
-    dist = lidarLite.distance(false); // Without bias correction
+  for (i = 0; i <sample; i++){
+    if ( cal_cnt == 0 ) {
+      distance[i] = lidarLite.distance();      // With bias correction
+    }
+    else {
+      distance[i] = lidarLite.distance(false); // Without bias correction
+    }
   }
+
+  Array_sort(distance, sample);//sort distance array
+  dist = Find_median(distance, sample);//find median distance
 
   // Increment reading counter
   cal_cnt++;
@@ -77,13 +87,14 @@ void lidar() {
 
   // Display distance
   Serial.println(dist);
-  //Serial.print(" cm");
 
-  delay(10);
+  //delay(1);
 }
+
+
 
 void loop(){
   span();
-
+  
   
 }
