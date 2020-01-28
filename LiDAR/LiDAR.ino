@@ -95,6 +95,6 @@ void lidar() {
 
 void loop(){
   span();
-  
+  Serial.write("--End of Scan--");
   
 }
