@@ -10,7 +10,10 @@ ArduinoSerial = serial.Serial(port, 115200)#serial port object
 #data arrays
 #theta, phi, r = ([0] for i in rannge(3))#RAW data in polar
 #x, y , z = ([0] for i in range(3))#3D coordinate
-f = open("datafile.txt","w+")
+
+print("Enter name of file to write to: ")
+filename = input()
+f = open('f{filename}.txt',"w+")
 
 def format(f):
     return "%.0f" %f
@@ -24,7 +27,7 @@ def write_to_file():
         temp_p = 135 - int(readSerial)#adjusting for v_angle offset
         temp_r = int(readSerial)
 
-        if (temp r > 5):#filter data with small distance
+        if (temp_r > 5):#filter data with small distance
 
             x = ((temp_r*cos(radians(temp_p))*cos(radians(temp_t))))
             y = ((temp_r*cos(radians(temp_p))*sin(radians(temp_t))))
@@ -40,5 +43,3 @@ def write_to_file():
             f.write(",")
             f.write(str(z))
             f.write("\n")
-
-write_to_file()
