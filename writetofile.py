@@ -13,7 +13,7 @@ ArduinoSerial = serial.Serial(port, 115200)#serial port object
 
 #data arrays
 #theta, phi, r = ([0] for i in rannge(3))#RAW data in polar
-#x, y , z = ([0] for i in range(3))#3D coordinate
+#x, y , z = ([0] for i in range(3))#3D coordinate  
 
 def format(f):
     return "%.0f" %f
@@ -22,6 +22,7 @@ def readSerial():
     return (ArduinoSerial.readline().decode("utf-8"))
 
 def write_to_file():
+    print("scanning...")
     while (readSerial != "--End of Scan--"):
         temp_t = int(readSerial())
         temp_p = 135 - int(readSerial())#adjusting for v_angle offset
