@@ -3,7 +3,7 @@
 # Arduino
 Mechanical controls & data collection:
 * Controlling two servos to sweep a semi-hemisphere.
-* Send polar coordinates based on servo angles and distance reading from the LiDAR.
+* Send polar coordinates based on servo angles, and distance reading from the LiDAR.
       
 # Python
 Data collection & presetation:
